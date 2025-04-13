@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Tabungan Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./styles.css">
+    <!-- Menambahkan PWA manifest -->
+    <link rel="manifest" href="./manifest.json">
+    <meta name="theme-color" content="#3b82f6">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+</head>
+<body class="bg-gray-50 font-sans">
+    <div class="container mx-auto px-4 py-4 md:py-8 max-w-4xl">
+        <!-- Header dengan App Bar -->
+        <header class="sticky top-0 z-10 bg-blue-600 text-white p-4 rounded-b-lg shadow-md mb-6 md:mb-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-xl md:text-2xl font-bold">Tabungan Digital</h1>
+                    <p class="text-xs md:text-sm text-blue-100">Kelola keuangan dan wujudkan impianmu</p>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button id="btn-refresh" class="p-2 rounded-full hover:bg-blue-700 transition-colors">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Saldo Section -->
+        <section class="bg-white rounded-xl shadow-md p-5 mb-6 md:mb-8">
+            <h2 class="text-lg md:text-xl font-semibold mb-3 md:mb-4 text-gray-700">Saldo Anda</h2>
+            <div class="flex flex-col md:flex-row md:justify-between md:items-center space-y-4 md:space-y-0">
+                <div>
+                    <p class="text-sm md:text-base text-gray-600">Total Tabungan</p>
+                    <p id="total-saldo" class="text-2xl md:text-4xl font-bold text-blue-600">Rp 0</p>
+                </div>
+                <div class="flex space-x-2 md:space-x-4">
+                    <button id="btn-tambah-pemasukan" class="bg-green-500 hover:bg-green-600 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg flex items-center text-sm md:text-base">
+                        <i class="fas fa-plus mr-1 md:mr-2"></i> Pemasukan
+                    </button>
+                    <button id="btn-tambah-pengeluaran" class="bg-red-500 hover:bg-red-600 text-white px-3 py-2 md:px-4 md:py-2 rounded-lg flex items-center text-sm md:text-base">
+                        <i class="fas fa-minus mr-1 md:mr-2"></i> Pengeluaran
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-200 mb-6">
+            <button id="tab-transaksi" class="flex-1 py-2 px-4 text-center font-medium text-blue-600 border-b-2 border-blue-600">
+                Transaksi
+            </button>
+            <button id="tab-impian" class="flex-1 py-2 px-4 text-center font-medium text-gray-500 hover:text-gray-700">
+                Impian
+            </button>
+        </div>
+
+        <!-- Transaksi Section -->
+        <section id="transaksi-section" class="block">
+            <div class="bg-white rounded-xl shadow-md p-5 mb-6 md:mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg md:text-xl font-semibold text-gray-700">Transaksi Terakhir</h2>
+                    <div class="flex space-x-2">
+                        <button id="btn-filter-semua" class="text-xs md:text-sm px-2 py-1 bg-blue-100 text-blue-600 rounded">Semua</button>
+                        <button id="btn-filter-pemasukan" class="text-xs md:text-sm px-2 py-1 bg-gray-100 text-gray-600 rounded">Pemasukan</button>
+                        <button id="btn-filter-pengeluaran" class="text-xs md:text-sm px-2 py-1 bg-gray-100 text-gray-600 rounded">Pengeluaran</button>
+                    </div>
+                </div>
+                <div id="transaksi-list" class="space-y-3">
+                    <p class="text-gray-500 text-center py-4">Belum ada transaksi</p>
+                </div>
+                <button id="btn-lihat-semua-transaksi" class="mt-4 w-full text-blue-600 hover:text-blue-800 text-sm font-medium">
+                    Lihat Semua Transaksi <i class="fas fa-chevron-down ml-1"></i>
+                </button>
+            </div>
+        </section>
+
+        <!-- Impian Section -->
+        <section id="impian-section" class="hidden">
+            <div class="bg-white rounded-xl shadow-md p-5 mb-6 md:mb-8">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-lg md:text-xl font-semibold text-gray-700">Daftar Impian</h2>
+                    <button id="btn-tambah-impian" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-2 rounded-lg flex items-center text-sm md:text-base">
+                        <i class="fas fa-plus mr-1 md:mr-2"></i> Tambah
+                    </button>
+                </div>
+                <div id="impian-list" class="grid grid-cols-1 gap-4">
+                    <p class="text-gray-500 col-span-full text-center py-4">Belum ada impian</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl p-6 w-full max-w-md max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-4 sticky top-0 bg-white py-2">
+                <h3 id="modal-title" class="text-xl font-semibold">Modal Title</h3>
+                <button id="modal-close" class="text-gray-500 hover:text-gray-700 text-2xl">
+                    &times;
+                </button>
+            </div>
+            <div id="modal-content">
+                <!-- Konten modal akan dimuat di sini -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation untuk Mobile -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 flex justify-around py-2 z-10">
+        <button id="mobile-tab-transaksi" class="flex flex-col items-center text-blue-600 p-2">
+            <i class="fas fa-exchange-alt mb-1"></i>
+            <span class="text-xs">Transaksi</span>
+        </button>
+        <button id="mobile-tab-impian" class="flex flex-col items-center text-gray-500 p-2">
+            <i class="fas fa-star mb-1"></i>
+            <span class="text-xs">Impian</span>
+        </button>
+        <button id="mobile-btn-tambah" class="flex flex-col items-center text-gray-500 p-2">
+            <i class="fas fa-plus-circle mb-1"></i>
+            <span class="text-xs">Tambah</span>
+        </button>
+    </nav>
+
+    <!-- Firebase App -->
+    <script type="module" src="./firebase.js"></script>
+    <script type="module" src="./app.js"></script>
+</body>
+</html>

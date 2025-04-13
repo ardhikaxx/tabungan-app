@@ -1,0 +1,91 @@
+/* Base Styles */
+body {
+    padding-bottom: 60px; /* Untuk bottom navigation */
+}
+
+/* Animasi untuk modal */
+#modal {
+    transition: opacity 0.3s ease;
+}
+
+/* Transisi untuk tab */
+#transaksi-section, #impian-section {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Efek hover untuk card impian */
+#impian-list > div {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+#impian-list > div:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Style untuk tombol yang dinonaktifkan */
+button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Progress bar styles */
+.progress-bar {
+    height: 8px;
+    border-radius: 4px;
+    background-color: #e5e7eb;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #3b82f6;
+    transition: width 0.3s ease;
+}
+
+/* Responsive design */
+@media (min-width: 768px) {
+    body {
+        padding-bottom: 0;
+    }
+    
+    #impian-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 1024px) {
+    #impian-list {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a1a1a1;
+}
+
+/* Animation for refresh button */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.refresh-animate {
+    animation: spin 0.7s linear;
+}
