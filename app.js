@@ -211,21 +211,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fungsi untuk menampilkan modal tambah transaksi
     function showTambahTransaksiModal(jenis) {
         const title = jenis === 'pemasukan' ? 'Tambah Pemasukan' : 'Tambah Pengeluaran';
+        const now = new Date();
+        const formattedDate = now.toISOString().slice(0, 16);
+        
         const content = `
             <form id="form-transaksi" class="space-y-4">
                 <div>
                     <label for="nominal" class="block text-gray-700 mb-2">Nominal (Rp)</label>
-                    <input type="number" id="nominal" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan nominal" required>
+                    <input type="number" id="nominal" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Masukkan nominal" required>
                 </div>
                 <div>
                     <label for="keterangan" class="block text-gray-700 mb-2">Keterangan</label>
-                    <input type="text" id="keterangan" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Gaji Bulanan" required>
+                    <input type="text" id="keterangan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Contoh: Gaji Bulanan" required>
                 </div>
-                <div>
-                    <label for="tanggal" class="block text-gray-700 mb-2">Tanggal</label>
-                    <input type="datetime-local" id="tanggal" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" value="${new Date().toISOString().slice(0, 16)}">
+                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
+                    <p class="text-sm text-blue-800 flex items-center">
+                        <i class="fas fa-info-circle mr-2"></i> 
+                        Tanggal transaksi: ${formatTanggal(now.getTime())}
+                    </p>
+                    <input type="hidden" id="tanggal" value="${now.toISOString()}">
                 </div>
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors">
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors shadow-md hover:shadow-lg font-medium">
                     Simpan Transaksi
                 </button>
             </form>
@@ -245,6 +251,18 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    function formatTanggal(tanggal) {
+        const date = new Date(tanggal);
+        const hari = date.toLocaleDateString('id-ID', { weekday: 'short' }).replace('.', '');
+        const tgl = date.getDate();
+        const bulan = date.toLocaleDateString('id-ID', { month: 'short' });
+        const tahun = date.getFullYear();
+        const jam = String(date.getHours()).padStart(2, '0');
+        const menit = String(date.getMinutes()).padStart(2, '0');
+        
+        return `${hari}, ${tgl} ${bulan} ${tahun}, ${jam}:${menit}`;
+    }    
     
     // Fungsi untuk menampilkan modal tambah impian
     function showTambahImpianModal() {
