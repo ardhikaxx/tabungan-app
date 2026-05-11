@@ -1,86 +1,141 @@
-/* Base Styles */
+html {
+    background: #eef7ff;
+}
+
 body {
-    padding-bottom: 60px; /* Untuk bottom navigation */
+    min-width: 320px;
+    background:
+        radial-gradient(circle at top left, rgba(34, 211, 238, 0.26), transparent 30rem),
+        radial-gradient(circle at 90% 8%, rgba(125, 211, 252, 0.42), transparent 28rem),
+        radial-gradient(circle at 10% 95%, rgba(167, 243, 208, 0.36), transparent 26rem),
+        linear-gradient(135deg, #f8fbff 0%, #eef7ff 48%, #f6fffb 100%);
+    color: #0f172a;
 }
 
-/* Animasi untuk modal */
-#modal {
-    transition: opacity 0.3s ease;
+button,
+input,
+textarea {
+    -webkit-tap-highlight-color: transparent;
 }
 
-/* Transisi untuk tab */
-#transaksi-section, #impian-section {
-    transition: opacity 0.3s ease, transform 0.3s ease;
+::selection {
+    background: rgba(14, 165, 233, 0.22);
+    color: #0f172a;
 }
 
-/* Efek hover untuk card impian */
-#impian-list > div {
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+.app-shell {
+    position: relative;
+    isolation: isolate;
 }
 
-#impian-list > div:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.app-shell::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background-image:
+        linear-gradient(rgba(14, 165, 233, 0.08) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 165, 233, 0.08) 1px, transparent 1px);
+    background-size: 44px 44px;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.44), transparent 78%);
 }
 
-/* Style untuk tombol yang dinonaktifkan */
+.glass-panel {
+    position: relative;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.42));
+    border: 1px solid rgba(255, 255, 255, 0.76);
+    box-shadow:
+        0 18px 50px rgba(14, 116, 144, 0.14),
+        inset 0 1px 0 rgba(255, 255, 255, 0.78);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+}
+
+.glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.58), transparent 38%);
+}
+
+.glass-input {
+    background: rgba(255, 255, 255, 0.58);
+    border: 1px solid rgba(255, 255, 255, 0.86);
+    color: #0f172a;
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.7),
+        0 10px 26px rgba(14, 116, 144, 0.08);
+}
+
+.glass-input:focus {
+    background: rgba(255, 255, 255, 0.86);
+    border-color: rgba(14, 165, 233, 0.58);
+    box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.14);
+}
+
+.glass-input::placeholder {
+    color: #94a3b8;
+}
+
 button:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
 
-/* Progress bar styles */
-.progress-bar {
+#modal {
+    transition: opacity 0.2s ease;
+}
+
+#transaksi-section,
+#impian-section {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+#impian-list > div {
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+#impian-list > div:hover {
+    transform: translateY(-2px);
+}
+
+input[type="search"]::-webkit-search-cancel-button {
+    cursor: pointer;
+}
+
+::-webkit-scrollbar {
+    width: 8px;
     height: 8px;
-    border-radius: 4px;
-    background-color: #e5e7eb;
-    overflow: hidden;
 }
 
-.progress-fill {
-    height: 100%;
-    background-color: #3b82f6;
-    transition: width 0.3s ease;
+::-webkit-scrollbar-track {
+    background: #e0f2fe;
 }
 
-/* Responsive design */
-@media (min-width: 768px) {
-    body {
-        padding-bottom: 0;
-    }
-    
+::-webkit-scrollbar-thumb {
+    background: #7dd3fc;
+    border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #38bdf8;
+}
+
+@media (min-width: 640px) {
     #impian-list {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 
 @media (min-width: 1024px) {
     #impian-list {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-}
-
-::-webkit-scrollbar-track {
-    background: #f1f1f1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #c1c1c1;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #a1a1a1;
-}
-
-/* Animation for refresh button */
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }

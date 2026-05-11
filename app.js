@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Elemen UI
     const totalSaldoElement = document.getElementById('total-saldo');
     const transaksiListElement = document.getElementById('transaksi-list');
+    const searchTransaksiInput = document.getElementById('search-transaksi');
     const impianListElement = document.getElementById('impian-list');
     const modalElement = document.getElementById('modal');
     const modalTitleElement = document.getElementById('modal-title');
@@ -38,6 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let transaksi = [];
     let impian = [];
     let currentFilter = 'semua';
+    let transactionSearchQuery = '';
     let showAllTransactions = false;
     
     // Fungsi untuk menampilkan modal
@@ -160,11 +162,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 showModal(
                     'Impian Tercapai!',
                     `
-                    <div class="text-center py-4">
-                        <i class="fas fa-check-circle text-5xl text-green-500 mb-4"></i>
+                    <div class="text-center py-4 text-slate-900">
+                        <i class="fas fa-check-circle text-5xl text-emerald-500 mb-4"></i>
                         <h3 class="text-xl font-bold mb-2">Selamat!</h3>
-                        <p class="mb-4">Impian "${impianData.nama}" telah tercapai!</p>
-                        <button onclick="hideModal()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+                        <p class="mb-4 text-slate-600">Impian "${impianData.nama}" telah tercapai!</p>
+                        <button onclick="hideModal()" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-2xl font-semibold">
                             Tutup
                         </button>
                     </div>
@@ -217,21 +219,21 @@ document.addEventListener('DOMContentLoaded', function() {
         const content = `
             <form id="form-transaksi" class="space-y-4">
                 <div>
-                    <label for="nominal" class="block text-gray-700 mb-2">Nominal (Rp)</label>
-                    <input type="number" id="nominal" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Masukkan nominal" required>
+                    <label for="nominal" class="block text-slate-700 font-medium mb-2">Nominal (Rp)</label>
+                    <input type="number" id="nominal" class="glass-input w-full px-4 py-3 rounded-2xl outline-none transition-all" placeholder="Masukkan nominal" required>
                 </div>
                 <div>
-                    <label for="keterangan" class="block text-gray-700 mb-2">Keterangan</label>
-                    <input type="text" id="keterangan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all" placeholder="Contoh: Gaji Bulanan" required>
+                    <label for="keterangan" class="block text-slate-700 font-medium mb-2">Keterangan</label>
+                    <input type="text" id="keterangan" class="glass-input w-full px-4 py-3 rounded-2xl outline-none transition-all" placeholder="Contoh: Gaji Bulanan" required>
                 </div>
-                <div class="bg-blue-50 p-3 rounded-lg border border-blue-100">
-                    <p class="text-sm text-blue-800 flex items-center">
+                <div class="bg-cyan-50/70 p-3 rounded-2xl border border-white/80">
+                    <p class="text-sm text-cyan-800 flex items-center">
                         <i class="fas fa-info-circle mr-2"></i> 
                         Tanggal transaksi: ${formatTanggal(now.getTime())}
                     </p>
                     <input type="hidden" id="tanggal" value="${now.toISOString()}">
                 </div>
-                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-lg transition-colors shadow-md hover:shadow-lg font-medium">
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-2xl transition-colors shadow-lg shadow-cyan-200/70 font-semibold">
                     Simpan Transaksi
                 </button>
             </form>
@@ -270,18 +272,18 @@ document.addEventListener('DOMContentLoaded', function() {
         const content = `
             <form id="form-impian" class="space-y-4">
                 <div>
-                    <label for="nama-impian" class="block text-gray-700 mb-2">Nama Impian</label>
-                    <input type="text" id="nama-impian" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Contoh: Liburan ke Bali" required>
+                    <label for="nama-impian" class="block text-slate-700 font-medium mb-2">Nama Impian</label>
+                    <input type="text" id="nama-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Contoh: Liburan ke Bali" required>
                 </div>
                 <div>
-                    <label for="target-impian" class="block text-gray-700 mb-2">Target Nominal (Rp)</label>
-                    <input type="number" id="target-impian" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Masukkan target" required>
+                    <label for="target-impian" class="block text-slate-700 font-medium mb-2">Target Nominal (Rp)</label>
+                    <input type="number" id="target-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Masukkan target" required>
                 </div>
                 <div>
-                    <label for="deskripsi-impian" class="block text-gray-700 mb-2">Deskripsi (Opsional)</label>
-                    <textarea id="deskripsi-impian" class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500" placeholder="Tambahkan deskripsi impian Anda" rows="3"></textarea>
+                    <label for="deskripsi-impian" class="block text-slate-700 font-medium mb-2">Deskripsi (Opsional)</label>
+                    <textarea id="deskripsi-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Tambahkan deskripsi impian Anda" rows="3"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-blue-500 hover:bg-blue-600 text-white py-2 rounded-lg transition-colors">
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-2xl font-semibold transition-colors shadow-lg shadow-cyan-200/70">
                     Tambah Impian
                 </button>
             </form>
@@ -310,36 +312,36 @@ document.addEventListener('DOMContentLoaded', function() {
         showModal(
             impianData.nama,
             `
-            <div class="space-y-4">
+            <div class="space-y-4 text-slate-700">
                 <div class="text-center">
-                    <p class="text-2xl font-bold ${bisaDicapai ? 'text-green-500' : 'text-blue-500'}">${formatRupiah(impianData.target)}</p>
-                    <p class="text-sm text-gray-500">Target</p>
+                    <p class="text-2xl font-bold ${bisaDicapai ? 'text-emerald-600' : 'text-cyan-700'}">${formatRupiah(impianData.target)}</p>
+                    <p class="text-sm text-slate-500">Target</p>
                 </div>
                 
                 <div>
-                    <div class="flex justify-between text-sm mb-1">
+                    <div class="flex justify-between text-sm mb-1 text-slate-600">
                         <span>Tersimpan: ${formatRupiah(saldo > impianData.target ? impianData.target : saldo)}</span>
                         <span>${bisaDicapai ? 'Tercapai!' : `Kurang ${formatRupiah(impianData.target - saldo)}`}</span>
                     </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2.5">
-                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${persentase}%"></div>
+                    <div class="w-full bg-white/70 rounded-full h-2.5 overflow-hidden">
+                        <div class="${bisaDicapai ? 'bg-emerald-500' : 'bg-cyan-500'} h-2.5 rounded-full" style="width: ${persentase}%"></div>
                     </div>
                 </div>
                 
                 ${impianData.deskripsi ? `
                     <div>
-                        <h4 class="font-medium text-gray-700 mb-1">Deskripsi</h4>
-                        <p class="text-gray-600">${impianData.deskripsi}</p>
+                        <h4 class="font-semibold text-slate-800 mb-1">Deskripsi</h4>
+                        <p class="text-slate-600">${impianData.deskripsi}</p>
                     </div>
                 ` : ''}
                 
                 <div class="grid grid-cols-2 gap-2 pt-4">
                     ${bisaDicapai ? `
-                        <button onclick="window.capaiImpian(${impianData.id})" class="bg-green-500 hover:bg-green-600 text-white py-2 rounded-lg transition-colors">
+                        <button onclick="window.capaiImpian(${impianData.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-semibold transition-colors">
                             Capai Impian
                         </button>
                     ` : ''}
-                    <button onclick="window.hapusImpian(${impianData.id})" class="bg-red-500 hover:bg-red-600 text-white py-2 rounded-lg transition-colors">
+                    <button onclick="window.hapusImpian(${impianData.id})" class="bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-2xl font-semibold transition-colors">
                         Hapus
                     </button>
                 </div>
@@ -351,16 +353,31 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fungsi untuk merender transaksi
     function renderTransaksi() {
         if (transaksi.length === 0) {
-            transaksiListElement.innerHTML = '<p class="text-gray-500 text-center py-4">Belum ada transaksi</p>';
+            transaksiListElement.innerHTML = '<p class="text-slate-500 text-center py-8">Belum ada transaksi</p>';
             return;
         }
         
-        // Filter transaksi berdasarkan jenis
+        // Filter transaksi berdasarkan jenis dan keterangan
         let filteredTransaksi = transaksi;
         if (currentFilter === 'pemasukan') {
             filteredTransaksi = transaksi.filter(t => t.jenis === 'pemasukan');
         } else if (currentFilter === 'pengeluaran') {
             filteredTransaksi = transaksi.filter(t => t.jenis === 'pengeluaran');
+        }
+
+        const normalizedQuery = transactionSearchQuery.trim().toLowerCase();
+        if (normalizedQuery) {
+            filteredTransaksi = filteredTransaksi.filter(t => 
+                (t.keterangan || '').toLowerCase().includes(normalizedQuery)
+            );
+        }
+
+        if (filteredTransaksi.length === 0) {
+            transaksiListElement.innerHTML = normalizedQuery
+                ? '<p class="text-slate-500 text-center py-8">Tidak ada transaksi dengan keterangan tersebut</p>'
+                : '<p class="text-slate-500 text-center py-8">Tidak ada transaksi pada filter ini</p>';
+            btnLihatSemuaTransaksi.classList.add('hidden');
+            return;
         }
         
         // Urutkan transaksi terbaru pertama
@@ -370,17 +387,17 @@ document.addEventListener('DOMContentLoaded', function() {
         const transaksiToShow = showAllTransactions ? sortedTransaksi : sortedTransaksi.slice(0, 5);
         
         transaksiListElement.innerHTML = transaksiToShow.map(t => `
-            <div class="flex justify-between items-center p-3 border-b hover:bg-gray-50 transition-colors">
-                <div class="flex items-center space-x-3">
-                    <div class="w-10 h-10 rounded-full flex items-center justify-center ${t.jenis === 'pemasukan' ? 'bg-green-100 text-green-600' : 'bg-red-100 text-red-600'}">
+            <div class="flex flex-col gap-3 p-4 hover:bg-white/50 transition-colors sm:flex-row sm:items-center sm:justify-between">
+                <div class="flex items-center gap-3 min-w-0">
+                    <div class="h-11 w-11 shrink-0 rounded-full flex items-center justify-center ${t.jenis === 'pemasukan' ? 'bg-emerald-100 text-emerald-600 ring-1 ring-emerald-200' : 'bg-rose-100 text-rose-600 ring-1 ring-rose-200'}">
                         <i class="fas ${t.jenis === 'pemasukan' ? 'fa-arrow-down' : 'fa-arrow-up'}"></i>
                     </div>
-                    <div>
-                        <p class="font-medium">${t.keterangan}</p>
-                        <p class="text-xs text-gray-500">${formatTanggal(t.tanggal)}</p>
+                    <div class="min-w-0">
+                        <p class="font-semibold text-slate-900 truncate">${t.keterangan}</p>
+                        <p class="text-xs text-slate-500">${formatTanggal(t.tanggal)}</p>
                     </div>
                 </div>
-                <p class="${t.jenis === 'pemasukan' ? 'text-green-600' : 'text-red-600'} font-semibold">
+                <p class="${t.jenis === 'pemasukan' ? 'text-emerald-600' : 'text-rose-600'} font-bold sm:text-right">
                     ${t.jenis === 'pemasukan' ? '+' : '-'} ${formatRupiah(t.nominal)}
                 </p>
             </div>
@@ -400,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Fungsi untuk merender impian
     function renderImpian() {
         if (impian.length === 0) {
-            impianListElement.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4">Belum ada impian</p>';
+            impianListElement.innerHTML = '<p class="text-slate-500 col-span-full text-center py-8">Belum ada impian</p>';
             return;
         }
         
@@ -408,7 +425,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const impianAktif = impian.filter(i => !i.tercapai);
         
         if (impianAktif.length === 0) {
-            impianListElement.innerHTML = '<p class="text-gray-500 col-span-full text-center py-4">Tidak ada impian aktif</p>';
+            impianListElement.innerHTML = '<p class="text-slate-500 col-span-full text-center py-8">Tidak ada impian aktif</p>';
             return;
         }
         
@@ -431,21 +448,21 @@ document.addEventListener('DOMContentLoaded', function() {
             const persentase = Math.min(Math.max((saldo / i.target) * 100, 0), 100);
             
             return `
-                <div class="border rounded-xl p-4 ${bisaDicapai ? 'border-green-500 bg-green-50' : 'border-gray-200'} hover:shadow-md transition-shadow cursor-pointer" onclick="window.showDetailImpian(${i.id})">
-                    <div class="flex justify-between items-start mb-2">
-                        <h3 class="font-semibold text-gray-800">${i.nama}</h3>
-                        <span class="text-sm ${bisaDicapai ? 'text-green-600' : 'text-gray-600'}">
+                <div class="rounded-3xl border p-4 ${bisaDicapai ? 'border-emerald-200 bg-emerald-50/70' : 'border-white/70 bg-white/40'} hover:bg-white/70 hover:shadow-xl hover:shadow-sky-200/40 transition-shadow cursor-pointer backdrop-blur" onclick="window.showDetailImpian(${i.id})">
+                    <div class="flex justify-between items-start gap-3 mb-3">
+                        <h3 class="font-bold text-slate-900 leading-snug">${i.nama}</h3>
+                        <span class="shrink-0 text-sm font-semibold ${bisaDicapai ? 'text-emerald-600' : 'text-slate-600'}">
                             ${formatRupiah(i.target)}
                         </span>
                     </div>
                     
-                    <div class="w-full bg-gray-200 rounded-full h-2.5 mb-3">
-                        <div class="bg-blue-600 h-2.5 rounded-full" style="width: ${persentase}%"></div>
+                    <div class="w-full bg-white/70 rounded-full h-2.5 mb-3 overflow-hidden">
+                        <div class="${bisaDicapai ? 'bg-emerald-500' : 'bg-cyan-500'} h-2.5 rounded-full" style="width: ${persentase}%"></div>
                     </div>
                     
-                    <div class="flex justify-between items-center text-sm">
-                        <span class="text-gray-600">Tersimpan: ${formatRupiah(saldo > i.target ? i.target : saldo)}</span>
-                        <span class="${bisaDicapai ? 'text-green-600 font-medium' : 'text-gray-500'}">
+                    <div class="flex justify-between items-center gap-3 text-sm">
+                        <span class="text-slate-600">Tersimpan: ${formatRupiah(saldo > i.target ? i.target : saldo)}</span>
+                        <span class="${bisaDicapai ? 'text-emerald-600 font-semibold' : 'text-slate-500'}">
                             ${bisaDicapai ? 'Tercapai!' : `${Math.round(persentase)}%`}
                         </span>
                     </div>
@@ -454,31 +471,49 @@ document.addEventListener('DOMContentLoaded', function() {
         }).join('');
     }
     
+    function setDesktopTabState(button, isActive) {
+        const icon = button.children[0];
+        const textGroup = button.children[1];
+        const subtitle = textGroup ? textGroup.children[1] : null;
+
+        if (isActive) {
+            button.classList.add('text-white', 'border-cyan-300', 'bg-gradient-to-br', 'from-cyan-500', 'to-blue-600', 'shadow-lg', 'shadow-cyan-200/80', 'hover:shadow-xl', 'hover:shadow-cyan-200/90');
+            button.classList.remove('text-slate-600', 'text-slate-500', 'border-white/70', 'bg-white/35', 'hover:bg-white/70', 'hover:text-slate-950', 'hover:shadow-sky-100/60');
+            icon?.classList.add('bg-white', 'text-cyan-700', 'shadow-md', 'shadow-cyan-700/10');
+            icon?.classList.remove('bg-white/70', 'text-slate-500', 'ring-1', 'ring-white/80');
+            subtitle?.classList.add('text-white/80');
+            subtitle?.classList.remove('text-slate-500/80', 'text-cyan-700/70');
+        } else {
+            button.classList.add('text-slate-600', 'border-white/70', 'bg-white/35', 'hover:bg-white/70', 'hover:text-slate-950', 'hover:shadow-lg', 'hover:shadow-sky-100/60');
+            button.classList.remove('text-white', 'text-cyan-700', 'border-cyan-300', 'bg-gradient-to-br', 'from-cyan-500', 'to-blue-600', 'shadow-lg', 'shadow-cyan-200/80', 'hover:shadow-xl', 'hover:shadow-cyan-200/90');
+            icon?.classList.add('bg-white/70', 'text-slate-500', 'ring-1', 'ring-white/80');
+            icon?.classList.remove('bg-white', 'text-cyan-700', 'shadow-md', 'shadow-cyan-700/10');
+            subtitle?.classList.add('text-slate-500/80');
+            subtitle?.classList.remove('text-white/80', 'text-cyan-700/70');
+        }
+    }
+
     // Fungsi untuk beralih antara tab
     function switchTab(tab) {
         if (tab === 'transaksi') {
-            tabTransaksi.classList.add('text-blue-600', 'border-blue-600');
-            tabTransaksi.classList.remove('text-gray-500', 'border-transparent');
-            tabImpian.classList.add('text-gray-500', 'border-transparent');
-            tabImpian.classList.remove('text-blue-600', 'border-blue-600');
+            setDesktopTabState(tabTransaksi, true);
+            setDesktopTabState(tabImpian, false);
             
-            mobileTabTransaksi.classList.add('text-blue-600');
-            mobileTabTransaksi.classList.remove('text-gray-500');
-            mobileTabImpian.classList.add('text-gray-500');
-            mobileTabImpian.classList.remove('text-blue-600');
+            mobileTabTransaksi.classList.add('text-cyan-700', 'bg-cyan-100/80', 'ring-1', 'ring-cyan-200/80');
+            mobileTabTransaksi.classList.remove('text-slate-500');
+            mobileTabImpian.classList.add('text-slate-500');
+            mobileTabImpian.classList.remove('text-cyan-700', 'bg-cyan-100/80', 'ring-1', 'ring-cyan-200/80');
             
             transaksiSection.classList.remove('hidden');
             impianSection.classList.add('hidden');
         } else {
-            tabImpian.classList.add('text-blue-600', 'border-blue-600');
-            tabImpian.classList.remove('text-gray-500', 'border-transparent');
-            tabTransaksi.classList.add('text-gray-500', 'border-transparent');
-            tabTransaksi.classList.remove('text-blue-600', 'border-blue-600');
+            setDesktopTabState(tabImpian, true);
+            setDesktopTabState(tabTransaksi, false);
             
-            mobileTabImpian.classList.add('text-blue-600');
-            mobileTabImpian.classList.remove('text-gray-500');
-            mobileTabTransaksi.classList.add('text-gray-500');
-            mobileTabTransaksi.classList.remove('text-blue-600');
+            mobileTabImpian.classList.add('text-cyan-700', 'bg-cyan-100/80', 'ring-1', 'ring-cyan-200/80');
+            mobileTabImpian.classList.remove('text-slate-500');
+            mobileTabTransaksi.classList.add('text-slate-500');
+            mobileTabTransaksi.classList.remove('text-cyan-700', 'bg-cyan-100/80', 'ring-1', 'ring-cyan-200/80');
             
             impianSection.classList.remove('hidden');
             transaksiSection.classList.add('hidden');
@@ -490,23 +525,23 @@ document.addEventListener('DOMContentLoaded', function() {
         currentFilter = filter;
         
         // Update tombol filter
-        btnFilterSemua.classList.remove('bg-blue-100', 'text-blue-600');
-        btnFilterPemasukan.classList.remove('bg-blue-100', 'text-blue-600');
-        btnFilterPengeluaran.classList.remove('bg-blue-100', 'text-blue-600');
+        btnFilterSemua.classList.remove('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
+        btnFilterPemasukan.classList.remove('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
+        btnFilterPengeluaran.classList.remove('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
         
-        btnFilterSemua.classList.add('bg-gray-100', 'text-gray-600');
-        btnFilterPemasukan.classList.add('bg-gray-100', 'text-gray-600');
-        btnFilterPengeluaran.classList.add('bg-gray-100', 'text-gray-600');
+        btnFilterSemua.classList.add('bg-white/50', 'text-slate-600', 'ring-white/80');
+        btnFilterPemasukan.classList.add('bg-white/50', 'text-slate-600', 'ring-white/80');
+        btnFilterPengeluaran.classList.add('bg-white/50', 'text-slate-600', 'ring-white/80');
         
         if (filter === 'semua') {
-            btnFilterSemua.classList.add('bg-blue-100', 'text-blue-600');
-            btnFilterSemua.classList.remove('bg-gray-100', 'text-gray-600');
+            btnFilterSemua.classList.add('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
+            btnFilterSemua.classList.remove('bg-white/50', 'text-slate-600', 'ring-white/80');
         } else if (filter === 'pemasukan') {
-            btnFilterPemasukan.classList.add('bg-blue-100', 'text-blue-600');
-            btnFilterPemasukan.classList.remove('bg-gray-100', 'text-gray-600');
+            btnFilterPemasukan.classList.add('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
+            btnFilterPemasukan.classList.remove('bg-white/50', 'text-slate-600', 'ring-white/80');
         } else if (filter === 'pengeluaran') {
-            btnFilterPengeluaran.classList.add('bg-blue-100', 'text-blue-600');
-            btnFilterPengeluaran.classList.remove('bg-gray-100', 'text-gray-600');
+            btnFilterPengeluaran.classList.add('bg-cyan-100/80', 'text-cyan-700', 'ring-cyan-200/80');
+            btnFilterPengeluaran.classList.remove('bg-white/50', 'text-slate-600', 'ring-white/80');
         }
         
         renderTransaksi();
@@ -526,10 +561,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Tambah Transaksi',
                 `
                 <div class="space-y-3">
-                    <button onclick="showTambahTransaksiModal('pemasukan')" class="w-full bg-green-500 hover:bg-green-600 text-white py-3 rounded-lg flex items-center justify-center">
+                    <button onclick="showTambahTransaksiModal('pemasukan')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
                         <i class="fas fa-plus mr-2"></i> Pemasukan
                     </button>
-                    <button onclick="showTambahTransaksiModal('pengeluaran')" class="w-full bg-red-500 hover:bg-red-600 text-white py-3 rounded-lg flex items-center justify-center">
+                    <button onclick="showTambahTransaksiModal('pengeluaran')" class="w-full bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
                         <i class="fas fa-minus mr-2"></i> Pengeluaran
                     </button>
                 </div>
@@ -542,6 +577,11 @@ document.addEventListener('DOMContentLoaded', function() {
     btnFilterSemua.addEventListener('click', () => updateFilter('semua'));
     btnFilterPemasukan.addEventListener('click', () => updateFilter('pemasukan'));
     btnFilterPengeluaran.addEventListener('click', () => updateFilter('pengeluaran'));
+    searchTransaksiInput.addEventListener('input', function() {
+        transactionSearchQuery = this.value;
+        showAllTransactions = Boolean(transactionSearchQuery.trim());
+        renderTransaksi();
+    });
     
     // Event listener untuk tombol lihat semua transaksi
     btnLihatSemuaTransaksi.addEventListener('click', () => {
@@ -592,6 +632,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // Ekspos fungsi ke global scope untuk digunakan di event onclick
+    window.hideModal = hideModal;
+    window.showTambahTransaksiModal = showTambahTransaksiModal;
     window.capaiImpian = capaiImpian;
     window.hapusImpian = hapusImpian;
     window.showDetailImpian = function(impianId) {
