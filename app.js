@@ -162,11 +162,15 @@ document.addEventListener('DOMContentLoaded', function() {
                 showModal(
                     'Impian Tercapai!',
                     `
-                    <div class="text-center py-4 text-slate-900">
-                        <i class="fas fa-check-circle text-5xl text-emerald-500 mb-4"></i>
-                        <h3 class="text-xl font-bold mb-2">Selamat!</h3>
-                        <p class="mb-4 text-slate-600">Impian "${impianData.nama}" telah tercapai!</p>
-                        <button onclick="hideModal()" class="bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-2 rounded-2xl font-semibold">
+                    <div class="space-y-5 text-center text-slate-900">
+                        <div class="rounded-3xl border border-emerald-200 bg-emerald-50/80 p-5">
+                            <div class="mx-auto mb-3 flex h-16 w-16 items-center justify-center rounded-3xl bg-emerald-500 text-white shadow-lg shadow-emerald-200/80">
+                                <i class="fas fa-check text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-extrabold text-slate-950">Selamat!</h3>
+                            <p class="mt-1 text-slate-600">Impian "${impianData.nama}" telah tercapai.</p>
+                        </div>
+                        <button onclick="hideModal()" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white px-4 py-3.5 rounded-2xl font-bold shadow-lg shadow-cyan-200/70">
                             Tutup
                         </button>
                     </div>
@@ -215,16 +219,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const title = jenis === 'pemasukan' ? 'Tambah Pemasukan' : 'Tambah Pengeluaran';
         const now = new Date();
         const formattedDate = now.toISOString().slice(0, 16);
+        const isPemasukan = jenis === 'pemasukan';
+        const icon = isPemasukan ? 'fa-arrow-down' : 'fa-arrow-up';
+        const helperText = isPemasukan
+            ? 'Catat uang yang masuk ke tabungan.'
+            : 'Catat uang yang keluar dari tabungan.';
         
         const content = `
-            <form id="form-transaksi" class="space-y-4">
+            <form id="form-transaksi" class="space-y-5">
+                <div class="rounded-3xl border ${isPemasukan ? 'border-emerald-200 bg-emerald-50/80' : 'border-rose-200 bg-rose-50/80'} p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl ${isPemasukan ? 'bg-emerald-500 text-white shadow-emerald-200/80' : 'bg-rose-500 text-white shadow-rose-200/80'} shadow-lg">
+                            <i class="fas ${icon}"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold ${isPemasukan ? 'text-emerald-700' : 'text-rose-700'}">${title}</p>
+                            <p class="text-sm text-slate-600">${helperText}</p>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label for="nominal" class="block text-slate-700 font-medium mb-2">Nominal (Rp)</label>
-                    <input type="number" id="nominal" class="glass-input w-full px-4 py-3 rounded-2xl outline-none transition-all" placeholder="Masukkan nominal" required>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">Rp</span>
+                        <input type="number" id="nominal" class="glass-input w-full rounded-2xl py-3 pl-11 pr-4 outline-none transition-all" placeholder="Masukkan nominal" required>
+                    </div>
                 </div>
                 <div>
                     <label for="keterangan" class="block text-slate-700 font-medium mb-2">Keterangan</label>
-                    <input type="text" id="keterangan" class="glass-input w-full px-4 py-3 rounded-2xl outline-none transition-all" placeholder="Contoh: Gaji Bulanan" required>
+                    <div class="relative">
+                        <i class="fas fa-align-left absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="keterangan" class="glass-input w-full rounded-2xl py-3 pl-11 pr-4 outline-none transition-all" placeholder="${isPemasukan ? 'Contoh: Gaji Bulanan' : 'Contoh: Beli kebutuhan'}" required>
+                    </div>
                 </div>
                 <div class="bg-cyan-50/70 p-3 rounded-2xl border border-white/80">
                     <p class="text-sm text-cyan-800 flex items-center">
@@ -233,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </p>
                     <input type="hidden" id="tanggal" value="${now.toISOString()}">
                 </div>
-                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-2xl transition-colors shadow-lg shadow-cyan-200/70 font-semibold">
+                <button type="submit" class="w-full ${isPemasukan ? 'bg-emerald-500 hover:bg-emerald-600 shadow-emerald-200/80' : 'bg-rose-500 hover:bg-rose-600 shadow-rose-200/80'} text-white py-3.5 rounded-2xl transition-colors shadow-lg font-bold">
                     Simpan Transaksi
                 </button>
             </form>
@@ -270,20 +296,37 @@ document.addEventListener('DOMContentLoaded', function() {
     function showTambahImpianModal() {
         const title = 'Tambah Impian Baru';
         const content = `
-            <form id="form-impian" class="space-y-4">
+            <form id="form-impian" class="space-y-5">
+                <div class="rounded-3xl border border-cyan-200 bg-cyan-50/80 p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-cyan-600 text-white shadow-lg shadow-cyan-200/80">
+                            <i class="fas fa-star"></i>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-cyan-700">Target Impian</p>
+                            <p class="text-sm text-slate-600">Tambahkan tujuan tabungan yang ingin dicapai.</p>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <label for="nama-impian" class="block text-slate-700 font-medium mb-2">Nama Impian</label>
-                    <input type="text" id="nama-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Contoh: Liburan ke Bali" required>
+                    <div class="relative">
+                        <i class="fas fa-bullseye absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="nama-impian" class="glass-input w-full rounded-2xl py-3 pl-11 pr-4 outline-none" placeholder="Contoh: Liburan ke Bali" required>
+                    </div>
                 </div>
                 <div>
                     <label for="target-impian" class="block text-slate-700 font-medium mb-2">Target Nominal (Rp)</label>
-                    <input type="number" id="target-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Masukkan target" required>
+                    <div class="relative">
+                        <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm font-bold text-slate-400">Rp</span>
+                        <input type="number" id="target-impian" class="glass-input w-full rounded-2xl py-3 pl-11 pr-4 outline-none" placeholder="Masukkan target" required>
+                    </div>
                 </div>
                 <div>
                     <label for="deskripsi-impian" class="block text-slate-700 font-medium mb-2">Deskripsi (Opsional)</label>
                     <textarea id="deskripsi-impian" class="glass-input w-full px-4 py-3 rounded-2xl outline-none" placeholder="Tambahkan deskripsi impian Anda" rows="3"></textarea>
                 </div>
-                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 rounded-2xl font-semibold transition-colors shadow-lg shadow-cyan-200/70">
+                <button type="submit" class="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3.5 rounded-2xl font-bold transition-colors shadow-lg shadow-cyan-200/70">
                     Tambah Impian
                 </button>
             </form>
@@ -312,16 +355,19 @@ document.addEventListener('DOMContentLoaded', function() {
         showModal(
             impianData.nama,
             `
-            <div class="space-y-4 text-slate-700">
-                <div class="text-center">
-                    <p class="text-2xl font-bold ${bisaDicapai ? 'text-emerald-600' : 'text-cyan-700'}">${formatRupiah(impianData.target)}</p>
-                    <p class="text-sm text-slate-500">Target</p>
+            <div class="space-y-5 text-slate-700">
+                <div class="rounded-3xl border ${bisaDicapai ? 'border-emerald-200 bg-emerald-50/80' : 'border-cyan-200 bg-cyan-50/80'} p-4 text-center">
+                    <div class="mx-auto mb-3 flex h-14 w-14 items-center justify-center rounded-2xl ${bisaDicapai ? 'bg-emerald-500 shadow-emerald-200/80' : 'bg-cyan-600 shadow-cyan-200/80'} text-white shadow-lg">
+                        <i class="fas ${bisaDicapai ? 'fa-check' : 'fa-star'}"></i>
+                    </div>
+                    <p class="text-2xl font-extrabold ${bisaDicapai ? 'text-emerald-600' : 'text-cyan-700'}">${formatRupiah(impianData.target)}</p>
+                    <p class="text-sm text-slate-600">Target impian</p>
                 </div>
                 
-                <div>
-                    <div class="flex justify-between text-sm mb-1 text-slate-600">
+                <div class="rounded-3xl border border-white/80 bg-white/50 p-4">
+                    <div class="flex justify-between gap-3 text-sm mb-2 text-slate-600">
                         <span>Tersimpan: ${formatRupiah(saldo > impianData.target ? impianData.target : saldo)}</span>
-                        <span>${bisaDicapai ? 'Tercapai!' : `Kurang ${formatRupiah(impianData.target - saldo)}`}</span>
+                        <span class="font-semibold">${bisaDicapai ? 'Tercapai!' : `Kurang ${formatRupiah(impianData.target - saldo)}`}</span>
                     </div>
                     <div class="w-full bg-white/70 rounded-full h-2.5 overflow-hidden">
                         <div class="${bisaDicapai ? 'bg-emerald-500' : 'bg-cyan-500'} h-2.5 rounded-full" style="width: ${persentase}%"></div>
@@ -329,19 +375,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
                 
                 ${impianData.deskripsi ? `
-                    <div>
+                    <div class="rounded-3xl border border-white/80 bg-white/50 p-4">
                         <h4 class="font-semibold text-slate-800 mb-1">Deskripsi</h4>
                         <p class="text-slate-600">${impianData.deskripsi}</p>
                     </div>
                 ` : ''}
                 
-                <div class="grid grid-cols-2 gap-2 pt-4">
+                <div class="grid grid-cols-2 gap-3 pt-1">
                     ${bisaDicapai ? `
-                        <button onclick="window.capaiImpian(${impianData.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-semibold transition-colors">
+                        <button onclick="window.capaiImpian(${impianData.id})" class="bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-bold transition-colors shadow-lg shadow-emerald-200/80">
                             Capai Impian
                         </button>
                     ` : ''}
-                    <button onclick="window.hapusImpian(${impianData.id})" class="bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-2xl font-semibold transition-colors">
+                    <button onclick="window.hapusImpian(${impianData.id})" class="bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-2xl font-bold transition-colors shadow-lg shadow-rose-200/80">
                         Hapus
                     </button>
                 </div>
@@ -560,12 +606,27 @@ document.addEventListener('DOMContentLoaded', function() {
             showModal(
                 'Tambah Transaksi',
                 `
-                <div class="space-y-3">
-                    <button onclick="showTambahTransaksiModal('pemasukan')" class="w-full bg-emerald-500 hover:bg-emerald-600 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
-                        <i class="fas fa-plus mr-2"></i> Pemasukan
+                <div class="space-y-4">
+                    <p class="text-sm text-slate-600">Pilih jenis transaksi yang ingin ditambahkan.</p>
+                    <button onclick="showTambahTransaksiModal('pemasukan')" class="group flex w-full items-center gap-4 rounded-3xl border border-emerald-200 bg-emerald-50/80 p-4 text-left transition-all hover:-translate-y-0.5 hover:bg-emerald-50 hover:shadow-lg hover:shadow-emerald-100/80">
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-emerald-500 text-white shadow-lg shadow-emerald-200/80">
+                            <i class="fas fa-arrow-down"></i>
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block font-bold text-slate-950">Pemasukan</span>
+                            <span class="block text-sm text-slate-600">Catat uang yang masuk ke tabungan.</span>
+                        </span>
+                        <i class="fas fa-chevron-right text-emerald-600 transition-transform group-hover:translate-x-1"></i>
                     </button>
-                    <button onclick="showTambahTransaksiModal('pengeluaran')" class="w-full bg-rose-500 hover:bg-rose-600 text-white py-3 rounded-2xl font-semibold flex items-center justify-center">
-                        <i class="fas fa-minus mr-2"></i> Pengeluaran
+                    <button onclick="showTambahTransaksiModal('pengeluaran')" class="group flex w-full items-center gap-4 rounded-3xl border border-rose-200 bg-rose-50/80 p-4 text-left transition-all hover:-translate-y-0.5 hover:bg-rose-50 hover:shadow-lg hover:shadow-rose-100/80">
+                        <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl bg-rose-500 text-white shadow-lg shadow-rose-200/80">
+                            <i class="fas fa-arrow-up"></i>
+                        </span>
+                        <span class="min-w-0 flex-1">
+                            <span class="block font-bold text-slate-950">Pengeluaran</span>
+                            <span class="block text-sm text-slate-600">Catat uang yang keluar dari tabungan.</span>
+                        </span>
+                        <i class="fas fa-chevron-right text-rose-600 transition-transform group-hover:translate-x-1"></i>
                     </button>
                 </div>
                 `
